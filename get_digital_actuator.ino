@@ -21,7 +21,7 @@ by Alexandru Gheorghe
 #include <WiFi.h>
 #include <PubSubClient.h>
   
-char ssid[] = "paste_your_SSID_here.ro";
+char ssid[] = "paste_your_SSID_here";
 char pass[] = "paste_your_SSID_password_here";
 
 int status = WL_IDLE_STATUS;
