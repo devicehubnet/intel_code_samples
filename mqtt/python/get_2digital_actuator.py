@@ -51,3 +51,7 @@ ACTUATOR_2 = Actuator(Actuator.ANALOG, ACTUATOR_NAME_2)
 
 device.addActuator(ACTUATOR_1, on_actuator_1)
 device.addActuator(ACTUATOR_2, on_actuator_2)
+
+while True:
+    device.send()
+    sleep(1)

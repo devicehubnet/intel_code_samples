@@ -45,3 +45,7 @@ ACTUATOR = Actuator(Actuator.DIGITAL, ACTUATOR_NAME)
 
 
 device.addActuator(ACTUATOR, on_actuator)
+
+while True:
+    device.send()
+    sleep(1)
