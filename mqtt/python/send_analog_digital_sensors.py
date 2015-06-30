@@ -1,13 +1,13 @@
 """
 
-DeviceHUB.net sample code for sending 2 strings.
+DeviceHUB.net sample code for sending an analog sensor and a digital sensor.
 
-In this example the strings are simulated.
+In this example the sensors are random simulated.
 
 First install Python API wrapper for devicehub 
 https://github.com/devicehubnet/devicehub_py
 
-created 29 June 2015
+created 30 June 2015
 by Mihnea Moldovan
 
 """
@@ -21,27 +21,24 @@ from time import sleep
 PROJECT_ID = 'paste_your_PROJECT_ID_here'
 DEVICE_UUID = 'paste_your_DEVICE_UUID_here'
 API_KEY = 'paste_your_API_KEY_here'
-STRING_NAME_1 = 'paste_your_first_STRING_NAME_here'
-STRING_NAME_2 = 'paste_your_second_STRING_NAME_here'
+AN_SENSOR_NAME = 'paste_your_analog_SENSOR_NAME_here'
+DI_SENSOR_NAME = 'paste_your_digital_SENSOR_NAME_here'
 
 
-#string simulation
-data1 = "StringTest1"
-data2 = "StringTest2"
 
 project = Project(PROJECT_ID, persistent = True)
 device = Device(project, DEVICE_UUID, API_KEY)
 
-STR1 = Sensor(Sensor.STRING, STRING_NAME_1)
-STR2 = Sensor(Sensor.STRING, STRING_NAME_2)
+DI_SENSOR = Sensor(Sensor.DIGITAL, DI_SENSOR_NAME)
+AN_SENSOR = Sensor(Sensor.ANALOG, AN_SENSOR_NAME)
 
-device.addSensor(STR1)
-device.addSensor(STR2)
+device.addSensor(DI_SENSOR)
+device.addSensor(AN_SENSOR)
 
 
 while True:
-    STR1.addValue(data1)
+    DI_SENSOR.addValue(randint(0, 1))
     sleep(0.5)
-    STR2.addValue(data2)
+    AN_SENSOR.addValue(randint(1, 100))
     device.send()
     sleep(1)

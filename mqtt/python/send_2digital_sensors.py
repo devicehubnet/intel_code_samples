@@ -39,6 +39,6 @@ device.addSensor(DI_SENSOR_2)
 while True:
     DI_SENSOR_1.addValue(randint(0, 1))
     sleep(0.5)
-    DI_SENSOR_1.addValue(randint(0,1))
+    DI_SENSOR_2.addValue(randint(0,1))
     device.send()
     sleep(1)

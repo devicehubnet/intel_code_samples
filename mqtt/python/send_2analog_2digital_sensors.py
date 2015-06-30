@@ -7,7 +7,7 @@ In this example the sensors are random simulated.
 First install Python API wrapper for devicehub 
 https://github.com/devicehubnet/devicehub_py
 
-created 28 June 2015
+created 30 June 2015
 by Mihnea Moldovan
 
 """
@@ -23,25 +23,23 @@ DEVICE_UUID = 'paste_your_DEVICE_UUID_here'
 API_KEY = 'paste_your_API_KEY_here'
 AN_SENSOR_NAME_1 = 'paste_your_first_analog_SENSOR_NAME_here'
 AN_SENSOR_NAME_2 = 'paste_your_second_analog_SENSOR_NAME_here'
-STRING_NAME1 = 'paste_your_first_STRING_NAME_here'
-STRING_NAME2 = 'paste_your_second_STRING_NAME_here'
+DI_SENSOR_NAME_1 = 'paste_your_first_digital_SENSOR_NAME_here'
+DI_SENSOR_NAME_2 = 'paste_your_second_digital_SENSOR_NAME_here'
 
-data1 = "StringTest1"
-data2 = "StringTest2"
+
 
 project = Project(PROJECT_ID, persistent = True)
 device = Device(project, DEVICE_UUID, API_KEY)
 
 AN_SENSOR_1 = Sensor(Sensor.ANALOG, AN_SENSOR_NAME_1)
 AN_SENSOR_2 = Sensor(Sensor.ANALOG, AN_SENSOR_NAME_2)
-STR1 = Sensor(Sensor.STRING, STRING_NAME1)
-STR2 = Sensor(Sensor.STRING, STRING_NAME2)
-
+DI_SENSOR_1 = Sensor(Sensor.DIGITAL, DI_SENSOR_NAME_1)
+DI_SENSOR_2 = Sensor(Sensor.DIGITAL, DI_SENSOR_NAME_2)
 
 device.addSensor(AN_SENSOR_1)
 device.addSensor(AN_SENSOR_2)
-device.addSensor(STR1)
-device.addSensor(STR2)
+device.addSensor(DI_SENSOR_1)
+device.addSensor(DI_SENSOR_2)
 
 
 while True:
@@ -49,8 +47,8 @@ while True:
     sleep(0.5)
     AN_SENSOR_2.addValue(randint(1, 100))
     sleep(0.5)
-    STR1.addValue(data1)
+    DI_SENSOR_1.addValue(randint(0, 1))
     sleep(0.5)
-    STR2.addValue(data2)
+    DI_SENSOR_2.addValue(randint(0,1))
     device.send()
     sleep(1)
