@@ -31,7 +31,7 @@ project = Project(PROJECT_ID, persistent = False)
 device = Device(project, DEVICE_UUID, API_KEY)
 
 
-POTENTIOMETER_SENSOR = Sensor(Sensor.STRING, POTENTIOMETER_SENSOR_NAME)
+POTENTIOMETER_SENSOR = Sensor(Sensor.ANALOG, POTENTIOMETER_SENSOR_NAME)
 
 device.addSensor(POTENTIOMETER_SENSOR)
 
