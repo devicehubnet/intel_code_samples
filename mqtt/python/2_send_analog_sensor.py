@@ -7,8 +7,8 @@ In this example the sensor is random simulated.
 First install Python API wrapper for devicehub 
 https://github.com/devicehubnet/devicehub_py
 
-created 28 June 2015
-by Mihnea Moldovan
+created 12 May 2017
+by Gabriel Arnautu
 
 """
 
@@ -16,24 +16,27 @@ by Mihnea Moldovan
 from devicehub.devicehub import Sensor, Actuator, Device, Project
 from random import randint
 from time import sleep
+import mraa
 
 
-PROJECT_ID = 'paste_your_PROJECT_ID_here'
-DEVICE_UUID = 'paste_your_DEVICE_UUID_here'
-API_KEY = 'paste_your_API_KEY_here'
-AN_SENSOR_NAME = 'paste_your_analog_SENSOR_NAME_here'
+PROJECT_ID = '13156'
+DEVICE_UUID = '9e4f6a13-ab95-42ab-81c8-a857864f2891'
+API_KEY = '209b0ec1-d2ef-4d01-b915-81688b540bfc'
 
 
+TEMPERATURE_SENSOR_NAME = 'Temperature'
 
-project = Project(PROJECT_ID, persistent = True)
+
+project = Project(PROJECT_ID, persistent = False)
 device = Device(project, DEVICE_UUID, API_KEY)
 
-AN_SENSOR = Sensor(Sensor.ANALOG, AN_SENSOR_NAME)
 
-device.addSensor(AN_SENSOR)
+TEMPERATURE_SENSOR = Sensor(Sensor.STRING, TEMPERATURE_SENSOR_NAME)
+
+device.addSensor(TEMPERATURE_SENSOR)
 
 
 while True:
-    AN_SENSOR.addValue(randint(1, 100))
-    device.send()
-    sleep(1)
+	TEMPERATURE_SENSOR.addValue(20)
+	device.send()
+	sleep(10)
