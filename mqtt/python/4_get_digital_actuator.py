@@ -18,34 +18,27 @@ from random import randint
 from time import sleep
 
 
-PROJECT_ID = 'paste_your_PROJECT_ID_here'
-DEVICE_UUID = 'paste_your_DEVICE_UUID_here'
-API_KEY = 'paste_your_API_KEY_here'
-ACTUATOR_NAME = 'paste_your_ACTUATOR_NAME_here'
+PROJECT_ID = '13156'
+DEVICE_UUID = '9e4f6a13-ab95-42ab-81c8-a857864f2891'
+API_KEY = '209b0ec1-d2ef-4d01-b915-81688b540bfc'
 
 
-def on_actuator(data):
-    """
-    Whenever an actuator receives a command from DeviceHub.net, it's state property is updated.
-    The received data is also passed to the callback as a dictionary consisting of 'timestamp' and 'state'.
-    timestamp - contains the unix timestamp at which the actuator was commanded
-    state - contains the new actuator state
-    """
-    print 'Received command to toggle the LED to', ACTUATOR.state
+BUZZER_DIGITAL_ACTUATOR_NAME = "Buzzer_power"
 
 
+def on_actuator_change(data):
+    buzzer_power_port.write(BUZZER_ACTUATOR.state)
 
-# We want the data to be saved to disk before sending it to DeviceHub.net so we're setting persistent to True
-# This also ensures that the project data stored locally is loaded if it exists.
-project = Project(PROJECT_ID, persistent=True)
+
+project = Project(PROJECT_ID, persistent = False)
 device = Device(project, DEVICE_UUID, API_KEY)
 
 
-ACTUATOR = Actuator(Actuator.DIGITAL, ACTUATOR_NAME)
+BUZZER_ACTUATOR = Actuator(Actuator.DIGITAL, BUZZER_DIGITAL_ACTUATOR_NAME)
+device.addActuator(BUZZER_ACTUATOR, on_actuator_change)
 
-
-device.addActuator(ACTUATOR, on_actuator)
+buzzer_power_port = mraa.Gpio(3)
+buzzer_power_port.dir(mraa.DIR_OUT)
 
 while True:
-    device.send()
     sleep(1)
