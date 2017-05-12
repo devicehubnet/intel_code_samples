@@ -24,19 +24,21 @@ DEVICE_UUID = '9e4f6a13-ab95-42ab-81c8-a857864f2891'
 API_KEY = '209b0ec1-d2ef-4d01-b915-81688b540bfc'
 
 
-TEMPERATURE_SENSOR_NAME = 'Temperature'
+POTENTIOMETER_SENSOR_NAME = 'Potentiometer'
 
 
 project = Project(PROJECT_ID, persistent = False)
 device = Device(project, DEVICE_UUID, API_KEY)
 
 
-TEMPERATURE_SENSOR = Sensor(Sensor.STRING, TEMPERATURE_SENSOR_NAME)
+POTENTIOMETER_SENSOR = Sensor(Sensor.STRING, POTENTIOMETER_SENSOR_NAME)
 
-device.addSensor(TEMPERATURE_SENSOR)
+device.addSensor(POTENTIOMETER_SENSOR)
+
+potentiometer_port = mraa.Aio(0)
 
 
 while True:
-	TEMPERATURE_SENSOR.addValue(20)
+	POTENTIOMETER_SENSOR.addValue(potentiometer_port.read())
 	device.send()
-	sleep(10)
+	sleep(3)
