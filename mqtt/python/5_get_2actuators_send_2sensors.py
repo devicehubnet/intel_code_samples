@@ -29,16 +29,21 @@ BUZZER_ANALOG_ACTUATOR_NAME = "Buzzer_intensity"
 
 
 buzzer_pwm_port = mraa.Pwm(3)
-buzzer_pwm_port.dir(mraa.DIR_OUT)
+#buzzer_pwm_port.dir(mraa.DIR_OUT)
 
 
 def on_digital_actuator_change(data):
     print "digital", BUZZER_ACTUATOR.state
+    print bool(BUZZER_ACTUATOR.state)
     buzzer_pwm_port.enable(bool(BUZZER_ACTUATOR.state))
 
 def on_analog_actuator_change(data):
     print "analog", BUZZER_ANALOG.state
-    pass
+    value = int(BUZZER_ANALOG.state)/100.0
+    #if value == 0:
+    #    buzzer_pwm_port.enable(False)
+    buzzer_pwm_port.write(value)
+
 
 project = Project(PROJECT_ID, persistent = False)
 device = Device(project, DEVICE_UUID, API_KEY)
@@ -47,7 +52,7 @@ device = Device(project, DEVICE_UUID, API_KEY)
 BUZZER_ACTUATOR = Actuator(Actuator.DIGITAL, BUZZER_DIGITAL_ACTUATOR_NAME)
 device.addActuator(BUZZER_ACTUATOR, on_digital_actuator_change)
 BUZZER_ANALOG = Actuator(Actuator.ANALOG, BUZZER_ANALOG_ACTUATOR_NAME)
-device.addActuator(BUZZER_ACTUATOR, on_analog_actuator_change)
+device.addActuator(BUZZER_ANALOG, on_analog_actuator_change)
 
 
 while True:
