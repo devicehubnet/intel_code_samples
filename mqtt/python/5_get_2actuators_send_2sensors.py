@@ -16,51 +16,39 @@ by Mihnea Moldovan
 from devicehub.devicehub import Sensor, Actuator, Device, Project
 from random import randint
 from time import sleep
+import mraa
 
 
-PROJECT_ID = 'paste_your_PROJECT_ID_here'
-DEVICE_UUID = 'paste_your_DEVICE_UUID_here'
-API_KEY = 'paste_your_API_KEY_here'
-ACTUATOR_NAME_1 = 'paste_your_first_ACTUATOR_NAME_here'
-ACTUATOR_NAME_2 = 'paste_your_second_ACTUATOR_NAME_here'
-AN_SENSOR_NAME_1 = 'paste_your_first_analog_SENSOR_NAME_here'
-AN_SENSOR_NAME_2 = 'paste_your_second_analog_SENSOR_NAME_here'
+PROJECT_ID = '13156'
+DEVICE_UUID = '9e4f6a13-ab95-42ab-81c8-a857864f2891'
+API_KEY = '209b0ec1-d2ef-4d01-b915-81688b540bfc'
 
 
-def on_actuator_1(data):
-    """
-    Whenever an actuator receives a command from DeviceHub.net, it's state property is updated.
-    The received data is also passed to the callback as a dictionary consisting of 'timestamp' and 'state'.
-    timestamp - contains the unix timestamp at which the actuator was commanded
-    state - contains the new actuator state
-    """
-    print 'Received command to toggle the LED to', ACTUATOR_1.state
+BUZZER_DIGITAL_ACTUATOR_NAME = "Buzzer_power"
+BUZZER_ANALOG_ACTUATOR_NAME = "Buzzer_intensity"
 
 
-def on_actuator_2(data):
-    print 'Received command to set the servo to', ACTUATOR_2.state
+buzzer_pwm_port = mraa.Pwm(3)
+buzzer_pwm_port.dir(mraa.DIR_OUT)
 
 
-# We want the data to be saved to disk before sending it to DeviceHub.net so we're setting persistent to True
-# This also ensures that the project data stored locally is loaded if it exists.
-project = Project(PROJECT_ID, persistent=True)
+def on_digital_actuator_change(data):
+    print "digital", BUZZER_ACTUATOR.state
+    buzzer_pwm_port.enable(bool(BUZZER_ACTUATOR.state))
+
+def on_analog_actuator_change(data):
+    print "analog", BUZZER_ANALOG.state
+    pass
+
+project = Project(PROJECT_ID, persistent = False)
 device = Device(project, DEVICE_UUID, API_KEY)
 
 
-ACTUATOR_1 = Actuator(Actuator.DIGITAL, ACTUATOR_NAME_1)
-ACTUATOR_2 = Actuator(Actuator.ANALOG, ACTUATOR_NAME_2)
-AN_SENSOR_1 = Sensor(Sensor.ANALOG, AN_SENSOR_NAME_1)
-AN_SENSOR_2 = Sensor(Sensor.ANALOG, AN_SENSOR_NAME_2)
+BUZZER_ACTUATOR = Actuator(Actuator.DIGITAL, BUZZER_DIGITAL_ACTUATOR_NAME)
+device.addActuator(BUZZER_ACTUATOR, on_digital_actuator_change)
+BUZZER_ANALOG = Actuator(Actuator.ANALOG, BUZZER_ANALOG_ACTUATOR_NAME)
+device.addActuator(BUZZER_ACTUATOR, on_analog_actuator_change)
 
-
-device.addActuator(ACTUATOR_1, on_actuator_1)
-device.addActuator(ACTUATOR_2, on_actuator_2)
-device.addSensor(AN_SENSOR_1)
-device.addSensor(AN_SENSOR_2)
 
 while True:
-    AN_SENSOR_1.addValue(randint(1, 100))
-    sleep(0.5)
-    AN_SENSOR_2.addValue(randint(1, 100))
-    device.send()
     sleep(1)
