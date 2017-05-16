@@ -7,8 +7,8 @@ In this example the sensors are random simulated.
 First install Python API wrapper for devicehub 
 https://github.com/devicehubnet/devicehub_py
 
-created 30 June 2015
-by Mihnea Moldovan
+created 12 May 2017
+by Gabriel Arnautu
 
 """
 
@@ -29,19 +29,14 @@ BUZZER_ANALOG_ACTUATOR_NAME = "Buzzer_intensity"
 
 
 buzzer_pwm_port = mraa.Pwm(3)
-#buzzer_pwm_port.dir(mraa.DIR_OUT)
-
+buzzer_pwm_port.enable(True)
+buzzer_pwm_port.write(1.0)
 
 def on_digital_actuator_change(data):
-    print "digital", BUZZER_ACTUATOR.state
-    print bool(BUZZER_ACTUATOR.state)
-    buzzer_pwm_port.enable(bool(BUZZER_ACTUATOR.state))
+    buzzer_pwm_port.enable(bool(int(BUZZER_ACTUATOR.state)))
 
 def on_analog_actuator_change(data):
-    print "analog", BUZZER_ANALOG.state
-    value = int(BUZZER_ANALOG.state)/100.0
-    #if value == 0:
-    #    buzzer_pwm_port.enable(False)
+    value = float(BUZZER_ANALOG.state)/100.0
     buzzer_pwm_port.write(value)
 
 
